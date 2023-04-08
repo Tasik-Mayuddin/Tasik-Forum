@@ -1,0 +1,74 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block topnav %}
+<a href="/userposts/{{current_user}}" style="float: left;">Posts</a>
+{% endblock %}
+
+
+{% block content %}
+<style>
+    body {
+        background-image: url('https://i.pinimg.com/originals/ec/11/7a/ec117a2614aad453a8b8f1a7d00cb7ce.jpg');
+    }
+</style>
+<br>
+<h1 style="padding-left:20px;">
+    Threads <a class="button" href='#' onclick='overlay()'>Make New Thread</a>
+</h1>
+<br>
+<div id="overlay">
+    <div>  
+        {% if user.is_authenticated %}    
+            <form method="POST" action="">
+                {% csrf_token %}
+                <input style="width: 100%" type="text" name='new'>
+                <button style="margin-top:3%;" type="submit" name="save" value="save" class="btn btn-success" onclick="overlay()">Add Thread</button>
+                <!--<button style="margin-top:3%; background-color: red;" name="cancel" value="cancel"onclick="overlay()" class="btn btn-success">Cancel</button>-->
+            </form>
+            <button style="margin-top:3%; background-color: red;" onclick="overlay()" class="btn btn-success">Cancel</button>
+        {% else %}
+            <p>Log in <a href="/login">here</a> to make a thread.</p>
+            <button onclick="overlay()">Close</button>
+        {% endif %}
+    </div>
+</div>
+<table id="threads">
+    <tr class = "home-tr">
+        <th class="home-td-c1">Title</th>
+        
+        <th>
+            <form action="" method = "POST">
+                {% csrf_token %}
+                <button class="link-button" type="submit" name="sort-number" value="sort-number">Number of posts</button>
+            </form>
+        </th>
+        <th>
+            <form action="" method = "POST">
+                {% csrf_token %}
+                <button class="link-button" type="submit" name="sort-created" value="sort-created">Date created</button>
+            </form>
+        </th>
+        <th>
+            <form action="" method = "POST">
+                {% csrf_token %}
+                <button class="link-button" type="submit" name="sort-last" value="sort-last">Last activity</button>
+            </form>
+        </th>
+    </tr>
+
+    {% for td in ls %}
+    
+            <tr onclick="window.location='/threads/{{td.id}}';">   
+                <td class="home-td-c1"><p><a href="/threads/{{td.id}}" style="color: black; text-decoration: none;">{{td.name}}</a></p></td>
+                <td class="home-td-c2"><p style="text-align: center;">{{td.post_count}}</p></td>
+                <td class="home-td-c3"><p style="text-align: left;">{{td.created_at}}</p></td>
+                <td class="home-td-c4"><p style="text-align: left;">{{td.edited_at}}</p></td>
+            </tr>
+        
+    {% endfor %}
+</table>
+{% endblock %}

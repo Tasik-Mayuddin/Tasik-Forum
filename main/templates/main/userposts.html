@@ -1,0 +1,35 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Posts
+{% endblock %}
+
+{% block topnav %}
+<a href="/userposts/{{current_user}}" style="float: left;">Posts</a>
+{% endblock %}
+
+
+{% block content %}
+<h1>{{current_user}}'s posts</h1>
+<div>
+    {% for x in post_list %}
+        <table>
+            <tr>
+                <hr>
+                <h5 style="font-weight: bold;">Thread: <a href="/threads/{{x.thread.id}}">{{x.thread}}</a></h5>
+                <p style="font-size: smaller;">Posted on {{x.created_at}}
+                    {% if x.reply != "False" %}
+                        | Replying to Post #{{x.reply}}
+                    {% endif %}
+                    |  <a href="/threads/{{x.thread.id}}#{{x.id}}">View in context</a>
+                </p>
+                <br>
+                <td>
+                    {{x.content|linebreaksbr}}
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+</div>
+
+{% endblock %}

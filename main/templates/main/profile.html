@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{current_user}}'s profile
+{% endblock %}
+
+{% block topnav %}
+    <a href="/userposts/{{current_user}}" style="float: left;">Posts</a>
+{% endblock %}
+
+{% block content %}
+    <br>
+    <h1>{{current_user}}'s profile</h1>
+    <hr class="mt-0 mb-4">
+    <br>
+    <div>
+        <img src="{{ current_user.profile.avatar.url }}" class="img-responsive" style="width: 200px; float: left; margin-right: 10px;" />
+    </div>
+    <div>
+        <form method = "POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Upload Photo</button>
+        </form>
+    </div>
+{% endblock %}
